@@ -1,0 +1,32 @@
+﻿@page "/square"
+@using SixLabors.ImageSharp;
+@using SixLabors.ImageSharp.PixelFormats;
+@using System.IO;
+
+<h1>Square</h1>
+<img src="@CreateImage()"/>
+
+
+@functions {
+
+
+    string CreateImage()
+    {
+        int width = 640;
+        int height = 480;
+        using (Image<Rgba32> image = new Image<Rgba32>(width, height)) // creates a new image with all the pixels set as transparent
+        using (MemoryStream output = new MemoryStream())
+        {
+            image.SaveAsPng<Rgba32>(output);
+            return output.ToArray().ToString;
+        }
+    }
+
+    string GetDataURL(byte[] imgData)
+    {
+        return "<img src=\"data:image/"
+               + Path.GetExtension("toto.png").Replace(".", "")
+               + ";base64,"
+               + Convert.ToBase64String(imgData) + "\" />";
+    }
+}
